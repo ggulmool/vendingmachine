@@ -1,28 +1,28 @@
 public class ChangeModule {
+    enum Coin {
+        KRW500(500), KRW100(100), KRW50(50), KRW10(10);
+        private int value;
+
+        private Coin(int value) {
+            this.value = value;
+        }
+    }
 
     public CoinSet getChangeCoinSet(int change) {
         CoinSet coinSet = new CoinSet();
-
-        while (change >= 500) {
-            change -= 500;
-            coinSet.add(500);
-        }
-
-        while (change >= 100) {
-            change -= 100;
-            coinSet.add(100);
-        }
-
-        while (change >= 50) {
-            change -= 50;
-            coinSet.add(50);
-        }
-
-        while (change >= 10) {
-            change -= 10;
-            coinSet.add(10);
+        int remainChange = change;
+        for (Coin coin : Coin.values()) {
+            remainChange = addCoinsToCoinSet(remainChange, coinSet, coin.value);
         }
 
         return coinSet;
+    }
+
+    private int addCoinsToCoinSet(int change, CoinSet coinSet, int coinValue) {
+        while (change >= coinValue) {
+            change -= coinValue;
+            coinSet.add(coinValue);
+        }
+        return change;
     }
 }
